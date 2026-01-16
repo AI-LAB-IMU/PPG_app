@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- 센서 / 포그라운드 서비스 / 웨어 권한 -->
+    <uses-permission android:name="android.permission.BODY_SENSORS" />
+    <uses-permission android:name="com.samsung.android.hardware.sensormanager.permission.READ_ADDITIONAL_HEALTH_DATA" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_DATA_SYNC" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_HEALTH" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="com.samsung.android.health.tracking.permission.HEALTH_TRACKING" />
+
+    <!-- 외부저장소 레거시 권한: 정말 필요한 경우에만 유지
+         (앱 전용 디렉토리 사용 시 보통 불필요) -->
+    <uses-permission
+        android:name="android.permission.READ_EXTERNAL_STORAGE"
+        android:maxSdkVersion="32" />
+    <uses-permission
+        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        android:maxSdkVersion="28" />
+
+    <!-- Wear OS 디바이스 대상 -->
+    <uses-feature android:name="android.hardware.type.watch" />
+
+    <application
+        android:allowBackup="true"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.PPPGreenDemo">
+
+        <!-- Wear 라이브러리 필요 시 -->
+        <uses-library
+            android:name="com.google.android.wearable"
+            android:required="true" />
+
+        <!-- 독립 실행 앱 설정 -->
+        <meta-data
+            android:name="com.google.android.wearable.standalone"
+            android:value="true" />
+
+        <activity
+            android:name=".MainActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <!-- 포그라운드 서비스 타입 명시(안드로이드 14+) -->
+        <service
+            android:name=".PPGService"
+            android:exported="false"
+            android:foregroundServiceType="health|dataSync" />
+    </application>
+
+</manifest>

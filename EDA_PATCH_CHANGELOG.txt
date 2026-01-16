@@ -1,0 +1,16 @@
+EDA-only Patch (Galaxy Watch 8) — 2025-09-23 (Asia/Seoul)
+
+Modified files:
+1) app/src/main/AndroidManifest.xml
+   + Added:
+     <uses-permission android:name="com.samsung.android.hardware.sensormanager.permission.READ_ADDITIONAL_HEALTH_DATA" />
+
+2) app/src/main/java/com/example/pppgreendemo/PPGService.kt
+   + Added field: private var edaTracker: HealthTracker? = null
+   + Added CSV file: fileStreamer.addFile("eda", "${base}_eda.csv", "timestamp,skin_conductance_uS,status\n")
+   + Added listener: edaListener -> logs timestamp, SKIN_CONDUCTANCE(µS), STATUS to "eda" channel.
+   + Registered tracker if supported:
+       HealthTrackerType.EDA_CONTINUOUS -> setEventListener(edaListener)
+   + Teardown: edaTracker?.unsetEventListener()
+
+No other logic was changed. All existing PPG/IMU/motion behavior remains intact.
